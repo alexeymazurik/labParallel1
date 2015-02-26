@@ -29,7 +29,7 @@ public class Matrix {
     public void revertMatrixParallel(int numberOfThreads) {
         List<Thread> threads = new ArrayList<Thread>();
 
-        int generalAmount = this.size / 2;
+        int generalAmount = this.size;
 
         int mod = generalAmount % numberOfThreads;
         int rangeSize = (generalAmount - mod) / numberOfThreads;
@@ -44,7 +44,6 @@ public class Matrix {
             if (i == numberOfThreads - 1) {
                 end += mod;
             }
-
             threads.add(new Thread(new CreateLineTask(this.size, start, end)));
         }
 
@@ -74,30 +73,30 @@ public class Matrix {
 
         @Override
         public void run() {
-            revertLines(length, start, end);
+            revertLinesParallels(length, start, end);
         }
 
     }
-
-    public void revertMatrix(int length){
-        for (int i = 0; i < length / 2; i++) {
-            for (int j = 0; j < length; j++) {
-                int tmp = matr[i][j];
-                matr[i][j] = matr[length-i-1][j];
-                matr[length-i-1][j] = tmp;
-            }
-        }
-    }
-
 
     public void revertLines(int length, int start, int end) {
         for (int i = start; i < end; i++) {
-            for (int j = 0; j < length; j++) {
+            int tmp2 = dumb();
+            for (int j = 0; j < length + tmp2; j++) {
                 int tmp = matr[i][j];
                 matr[i][j] = matr[length-i-1][j];
                 matr[length-i-1][j] = tmp;
             }
+        }
+    }
+
+    public void revertLinesParallels(int length, int start, int end) {
+        for (int i = start; i < end; i++) {
             int tmp2 = dumb();
+            for (int j = 0; j < length + tmp2; j++) {
+                int tmp = matr[i][j];
+                matr[i][j] = matr[length-i-1][j];
+                matr[length-i-1][j] = tmp;
+            }
         }
     }
 
